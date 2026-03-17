@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Bag | Purple Mummy ELIXIRS</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .cart-page-layout {
+            display: flex;
+            gap: 3rem;
+            margin-top: 2rem;
+            margin-bottom: 4rem;
+        }
+        .cart-items-section {
+            flex: 2;
+        }
+        .checkout-section {
+            flex: 1;
+            background: var(--color-cream);
+            padding: 2rem;
+            border-radius: var(--radius-md);
+            height: fit-content;
+        }
+        .cart-item {
+            display: flex;
+            gap: 1.5rem;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid var(--color-border);
+        }
+        .cart-item-img {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: var(--radius-sm);
+        }
+        .cart-item-details {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .cart-item-title {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+        .cart-item-price {
+            font-weight: 600;
+            color: var(--color-purple);
+        }
+        .cart-item-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .qty-btn {
+            background: var(--color-white);
+            border: 1px solid var(--color-border);
+            width: 28px;
+            height: 28px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .qty-display {
+            font-weight: 500;
+            width: 20px;
+            text-align: center;
+        }
+        .remove-btn {
+            color: var(--color-error);
+            font-size: 0.85rem;
+            cursor: pointer;
+            text-decoration: underline;
+            margin-left: auto;
+        }
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        .empty-cart-msg {
+            text-align: center;
+            padding: 4rem 0;
+            color: var(--color-text-light);
+        }
+        @media (max-width: 768px) {
+            .cart-page-layout {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="container flex items-center justify-between">
+            <a href="index.html" class="brand-logo brand-font">
+                Purple Mummy
+                <span>ELIXIRS</span>
+            </a>
+            
+            <nav class="nav-links">
+                <a href="index.html#shop">Shop</a>
+                <a href="index.html#collections">Collections</a>
+                <a href="index.html#our-story">Our Story</a>
+            </nav>
+
+            <div class="cart-icon">
+                <a href="cart.html" class="btn btn-secondary" style="display:inline-block; width:100%;">
+                    Cart (<span id="cart-count">0</span>)
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <h1 class="brand-font" style="margin-top: 2rem; font-size: 2.5rem;">Your Bag</h1>
+        
+        <div class="cart-page-layout" id="cart-layout">
+            <!-- Left: Items -->
+            <div class="cart-items-section" id="cart-items-container">
+                <!-- JS will populate items here -->
+            </div>
+
+            <!-- Right: Checkout Form -->
+            <div class="checkout-section">
+                <h2 class="brand-font" style="margin-bottom: 1.5rem; border-bottom: 1px solid var(--color-border); padding-bottom: 1rem;">Order Summary</h2>
+                
+                <div class="summary-row">
+                    <span>Subtotal</span>
+                    <span id="cart-subtotal">$0.00</span>
+                </div>
+                <div style="font-size: 0.85rem; color: var(--color-text-light); margin-bottom: 2rem;">
+                    Shipping & taxes calculated at checkout
+                </div>
+
+                <form id="checkout-form">
+                    <h3 class="brand-font" style="margin-bottom: 1rem; font-size: 1.25rem;">Delivery Details</h3>
+                    <div class="form-group">
+                        <label for="c-name">Full Name</label>
+                        <input type="text" id="c-name" class="form-control" required placeholder="Jane Doe">
+                    </div>
+                    <div class="form-group">
+                        <label for="c-phone">Phone Number</label>
+                        <input type="tel" id="c-phone" class="form-control" required placeholder="(555) 123-4567">
+                    </div>
+                    <div class="form-group">
+                        <label for="c-location">Delivery Location / Address</label>
+                        <textarea id="c-location" class="form-control" rows="3" required placeholder="123 Luxury Lane, NY 10001"></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem; padding: 1rem; font-size: 1.1rem;" id="checkout-btn">
+                        Confirm Order
+                    </button>
+                </form>
+            </div>
+        </div>
+        
+        <div id="empty-cart-view" class="empty-cart-msg" style="display: none;">
+            <p style="margin-bottom: 1rem; font-size: 1.2rem;">Your bag is currently empty.</p>
+            <a href="index.html" class="btn btn-primary">Continue Shopping</a>
+        </div>
+    </main>
+
+    <footer class="site-footer" style="margin-top: 4rem;">
+        <div class="container flex justify-between">
+            <div class="footer-brand">
+                <h3 class="brand-font">Purple Mummy ELIXIRS</h3>
+                <p>Luxurious artisanal oil perfumes crafted for elegance.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/db.js"></script>
+    <script src="js/cart.js"></script>
+</body>
+</html>
