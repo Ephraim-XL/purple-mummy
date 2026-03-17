@@ -1,14 +1,22 @@
 // storefront.js
 
-document.addEventListener('DOMContentLoaded', () => {
-    let cart = [];
-
-    // Elements
+document.addEventListener('DOMContentLoaded', async () => {
     const productGrid = document.getElementById('product-grid');
     const heroSection = document.getElementById('hero-section');
     const cartCountEl = document.getElementById('cart-count');
 
-    // Render Hero Section
+    // Price multipliers per size
+    const sizeMultipliers = { '6ml': 1, '10ml': 1.5, '15ml': 2, '30ml': 3.5 };
+
+    window.updatePriceDisplay = function(productId, basePrice) {
+        const selectEl = document.getElementById(`size-${productId}`);
+        const priceEl = document.getElementById(`price-${productId}`);
+        if (selectEl && priceEl) {
+            const multiplier = sizeMultipliers[selectEl.value] || 1;
+            priceEl.textContent = `$${(basePrice * multiplier).toFixed(2)}`;
+        }
+    };
+
     function renderHero() {
         if (!heroSection) return;
         heroSection.innerHTML = `
@@ -20,29 +28,12 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
     }
 
-    // Price Multipliers based on Size
-    const sizeMultipliers = {
-        '6ml': 1,
-        '10ml': 1.5,
-        '15ml': 2,
-        '30ml': 3.5
-    };
-
-    window.updatePriceDisplay = function(productId, basePrice) {
-        const selectEl = document.getElementById(`size-${productId}`);
-        const priceEl = document.getElementById(`price-${productId}`);
-        if (selectEl && priceEl) {
-            const multiplier = sizeMultipliers[selectEl.value] || 1;
-            const newPrice = basePrice * multiplier;
-            priceEl.textContent = `$${newPrice.toFixed(2)}`;
-        }
-    };
-
-    // Render Products
-    function renderProducts() {
+    async function renderProducts() {
         if (!productGrid) return;
-        const products = getProducts();
+        productGrid.innerHTML = '<p style="text-align:center; padding:2rem; color:var(--color-text-light);">Loading...</p>';
         
+        const products = await getProducts();
+
         if (products.length === 0) {
             productGrid.innerHTML = '<p>No products available at the moment.</p>';
             return;
@@ -63,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="product-info">
                         <h3 class="product-name brand-font">${product.name}</h3>
                         <p class="product-desc">${product.description}</p>
-                        
+
                         <div class="form-group" style="margin-bottom: 1rem;">
                             <label for="size-${product.id}" style="font-size: 0.8rem; color: var(--color-text-light);">Select Size:</label>
                             <select id="size-${product.id}" class="form-control" onchange="updatePriceDisplay('${product.id}', ${product.price})" style="padding: 0.5rem;" ${isSoldOut ? 'disabled' : ''}>
@@ -86,50 +77,35 @@ document.addEventListener('DOMContentLoaded', () => {
         }).join('');
     }
 
-    // Cart Logic
+    // Cart stays in localStorage (it's per-user session data)
     function loadCartStorefront() {
-        const storedCart = localStorage.getItem('pm_cart');
-        if (storedCart) {
-            try { return JSON.parse(storedCart); } 
-            catch (e) { return []; }
-        }
-        return [];
+        try { return JSON.parse(localStorage.getItem('pm_cart')) || []; }
+        catch (e) { return []; }
     }
 
-    function saveCartStorefront(newCart) {
-        localStorage.setItem('pm_cart', JSON.stringify(newCart));
+    function saveCartStorefront(cartData) {
+        localStorage.setItem('pm_cart', JSON.stringify(cartData));
     }
 
-    window.addToCart = function(productId, basePrice) {
-        const products = getProducts();
+    window.addToCart = async function(productId, basePrice) {
+        const products = await getProducts();
         const product = products.find(p => p.id === productId);
-        
         if (!product || product.status === 'Sold Out') return;
 
-        // Get selected size and updated price
         const selectEl = document.getElementById(`size-${productId}`);
         const selectedSize = selectEl ? selectEl.value : '6ml';
-        const multiplier = sizeMultipliers[selectedSize] || 1;
-        const actualPrice = basePrice * multiplier;
-
-        // Composite ID
+        const actualPrice = basePrice * (sizeMultipliers[selectedSize] || 1);
         const cartItemId = `${productId}_${selectedSize}`;
 
         let cartData = loadCartStorefront();
         const cartItem = cartData.find(item => item.cartId === cartItemId);
-        
+
         if (cartItem) {
             cartItem.quantity += 1;
         } else {
-            cartData.push({ 
-                ...product, 
-                cartId: cartItemId, 
-                size: selectedSize, 
-                price: actualPrice, // Override base price with selected size price
-                quantity: 1 
-            });
+            cartData.push({ ...product, cartId: cartItemId, size: selectedSize, price: actualPrice, quantity: 1 });
         }
-        
+
         saveCartStorefront(cartData);
         updateCartCountUI(cartData);
         showToast(`Added ${product.name} (${selectedSize}) to bag`);
@@ -137,8 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updateCartCountUI(cartData) {
         if (!cartCountEl) return;
-        const total = cartData.reduce((sum, item) => sum + item.quantity, 0);
-        cartCountEl.textContent = total;
+        cartCountEl.textContent = cartData.reduce((sum, item) => sum + item.quantity, 0);
     }
 
     function showToast(message) {
@@ -146,15 +121,12 @@ document.addEventListener('DOMContentLoaded', () => {
         toast.className = 'toast show';
         toast.textContent = message;
         document.body.appendChild(toast);
-        
-        setTimeout(() => {
-            toast.classList.remove('show');
-            setTimeout(() => toast.remove(), 300);
-        }, 3000);
+        setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 300); }, 3000);
     }
 
     // Initialize
+    await initDb();
     renderHero();
-    renderProducts();
+    await renderProducts();
     updateCartCountUI(loadCartStorefront());
 });

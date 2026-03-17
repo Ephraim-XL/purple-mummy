@@ -1,145 +1,95 @@
-// db.js - Mock database using localStorage
+// db.js - Cloud database using Firebase Firestore
 
-const DB_KEY_PRODUCTS = 'pm_products';
-const DB_KEY_ORDERS = 'pm_orders';
-
+// Initial seed data (used only if Firestore collections are empty)
 const initialProducts = [
-  {
-    id: 'pm-001',
-    name: "Mystique Rose",
-    description: "A delicate blend of Damascus Rose and warm Sandalwood. Experience luxury in every drop.",
-    price: 85.00,
-    category: "Floral",
-    stock: 12,
-    status: "Active",
-    imageUrl: "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=400"
-  },
-  {
-    id: 'pm-002',
-    name: "Desert Oud",
-    description: "Rich, woody, and intensely captivating. Our signature Oud blend with a touch of vanilla.",
-    price: 125.00,
-    category: "Woody",
-    stock: 5,
-    status: "Active",
-    imageUrl: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&q=80&w=400"
-  },
-  {
-    id: 'pm-003',
-    name: "Mummy's Grace",
-    description: "A calming elixir of Jasmine, Lavender, and hints of Bergamot.",
-    price: 65.00,
-    category: "Floral",
-    stock: 0,
-    status: "Sold Out",
-    imageUrl: "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&q=80&w=400"
-  },
-  {
-    id: 'pm-004',
-    name: "Golden Amber",
-    description: "Warm amber perfectly balanced with sweet musk and subtle spices.",
-    price: 90.00,
-    category: "Oriental",
-    stock: 8,
-    status: "Active",
-    imageUrl: "https://images.unsplash.com/photo-1587017539504-67cfbfc2cd5f?auto=format&fit=crop&q=80&w=400"
-  }
+  { id: 'pm-001', name: "Mystique Rose", description: "A delicate blend of Damascus Rose and warm Sandalwood. Experience luxury in every drop.", price: 85.00, category: "Floral", stock: 12, status: "Active", imageUrl: "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=400" },
+  { id: 'pm-002', name: "Desert Oud", description: "Rich, woody, and intensely captivating. Our signature Oud blend with a touch of vanilla.", price: 125.00, category: "Woody", stock: 5, status: "Active", imageUrl: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&q=80&w=400" },
+  { id: 'pm-003', name: "Mummy's Grace", description: "A calming elixir of Jasmine, Lavender, and hints of Bergamot.", price: 65.00, category: "Floral", stock: 0, status: "Sold Out", imageUrl: "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&q=80&w=400" },
+  { id: 'pm-004', name: "Golden Amber", description: "Warm amber perfectly balanced with sweet musk and subtle spices.", price: 90.00, category: "Oriental", stock: 8, status: "Active", imageUrl: "https://images.unsplash.com/photo-1587017539504-67cfbfc2cd5f?auto=format&fit=crop&q=80&w=400" }
 ];
 
 const initialOrders = [
-  {
-    id: 'ORD-1001',
-    customerName: 'Eleanor Vance',
-    date: new Date(Date.now() - 86400000 * 2).toISOString(),
-    items: [{ productId: 'pm-001', quantity: 1, price: 85 }],
-    totalPrice: 85.00,
-    status: 'Approved'
-  },
-  {
-    id: 'ORD-1002',
-    customerName: 'Marcus Pierce',
-    date: new Date().toISOString(),
-    items: [{ productId: 'pm-002', quantity: 1, price: 125 }],
-    totalPrice: 125.00,
-    status: 'Pending Approval'
-  }
+  { id: 'ORD-1001', customerName: 'Eleanor Vance', phoneNumber: '+1 (555) 234-5678', location: '45 Blossom Ave, New York, NY 10001', date: new Date(Date.now() - 86400000 * 2).toISOString(), items: [{ productId: 'pm-001', quantity: 1, price: 85 }], totalPrice: 85.00, status: 'Approved' },
+  { id: 'ORD-1002', customerName: 'Marcus Pierce', phoneNumber: '+1 (555) 876-5432', location: '12 Royal Street, Brooklyn, NY 11201', date: new Date().toISOString(), items: [{ productId: 'pm-002', quantity: 1, price: 125 }], totalPrice: 125.00, status: 'Pending Approval' }
 ];
 
-// Initialize DB if empty
-function initDb() {
-  if (!localStorage.getItem(DB_KEY_PRODUCTS)) {
-    localStorage.setItem(DB_KEY_PRODUCTS, JSON.stringify(initialProducts));
-  }
-  if (!localStorage.getItem(DB_KEY_ORDERS)) {
-    localStorage.setItem(DB_KEY_ORDERS, JSON.stringify(initialOrders));
-  }
+// =============================
+// Product API (Firestore)
+// =============================
+
+async function getProducts() {
+  const snapshot = await db.collection('products').get();
+  return snapshot.docs.map(doc => ({ ...doc.data() }));
 }
 
-// Product API
-function getProducts() {
-  return JSON.parse(localStorage.getItem(DB_KEY_PRODUCTS)) || [];
+async function addProduct(product) {
+  await db.collection('products').doc(product.id).set(product);
 }
 
-function saveProducts(products) {
-  localStorage.setItem(DB_KEY_PRODUCTS, JSON.stringify(products));
+async function updateProduct(product) {
+  await db.collection('products').doc(product.id).set(product);
 }
 
-function updateProductStatus(id, newStatus) {
-  const products = getProducts();
-  const index = products.findIndex(p => p.id === id);
-  if (index !== -1) {
-    products[index].status = newStatus;
-    saveProducts(products);
-  }
+async function deleteProduct(id) {
+  await db.collection('products').doc(id).delete();
 }
 
-function deleteProduct(id) {
-  const products = getProducts();
-  saveProducts(products.filter(p => p.id !== id));
+async function updateProductStatus(id, newStatus) {
+  await db.collection('products').doc(id).update({ status: newStatus });
 }
 
-function addProduct(product) {
-  const products = getProducts();
-  products.push(product);
-  saveProducts(products);
+// =============================
+// Order API (Firestore)
+// =============================
+
+async function getOrders() {
+  const snapshot = await db.collection('orders').orderBy('date', 'desc').get();
+  return snapshot.docs.map(doc => ({ ...doc.data() }));
 }
 
-// Order API
-function getOrders() {
-  return JSON.parse(localStorage.getItem(DB_KEY_ORDERS)) || [];
-}
-
-function saveOrders(orders) {
-  localStorage.setItem(DB_KEY_ORDERS, JSON.stringify(orders));
-}
-
-function createOrder(orderData) {
-  const orders = getOrders();
-  const id = 'ORD-' + (1000 + orders.length + 1);
+async function createOrder(orderData) {
+  const snapshot = await db.collection('orders').get();
+  const id = 'ORD-' + (1000 + snapshot.size + 1);
   const newOrder = {
     id,
     date: new Date().toISOString(),
     status: 'Pending Approval',
     ...orderData
   };
-  orders.push(newOrder);
-  saveOrders(orders);
+  await db.collection('orders').doc(id).set(newOrder);
   return newOrder;
 }
 
-function updateOrderStatus(id, status) {
-  const orders = getOrders();
-  const index = orders.findIndex(o => o.id === id);
-  if (index !== -1) {
-    orders[index].status = status;
-    saveOrders(orders);
+async function updateOrderStatus(id, status) {
+  await db.collection('orders').doc(id).update({ status });
+}
+
+async function deleteOrder(id) {
+  await db.collection('orders').doc(id).delete();
+}
+
+// =============================
+// Seed DB on First Load
+// =============================
+
+async function initDb() {
+  try {
+    const productSnapshot = await db.collection('products').limit(1).get();
+    if (productSnapshot.empty) {
+      console.log('Seeding initial products to Firestore...');
+      const batch = db.batch();
+      initialProducts.forEach(p => batch.set(db.collection('products').doc(p.id), p));
+      await batch.commit();
+    }
+
+    const orderSnapshot = await db.collection('orders').limit(1).get();
+    if (orderSnapshot.empty) {
+      console.log('Seeding initial orders to Firestore...');
+      const batch = db.batch();
+      initialOrders.forEach(o => batch.set(db.collection('orders').doc(o.id), o));
+      await batch.commit();
+    }
+  } catch (err) {
+    console.error('Error initializing DB. Check your firebase-config.js settings.', err);
   }
 }
-
-function deleteOrder(id) {
-  const orders = getOrders();
-  saveOrders(orders.filter(o => o.id !== id));
-}
-
-// Run init on load
-initDb();
