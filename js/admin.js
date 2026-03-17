@@ -72,13 +72,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     async function renderProductsTable() {
         if (!productTbody) return;
         const products = await getProducts();
-        productTbody.innerHTML = products.map(p => `
+        productTbody.innerHTML = products.map(p => {
+            // Support both old (price) and new (prices) schemas
+            const displayPrice = p.prices
+                ? `$${p.prices['6ml']} – $${p.prices['30ml']}`
+                : `$${(p.price || 0).toFixed(2)}`;
+            return `
             <tr>
                 <td>${p.id}</td>
                 <td><img src="${p.imageUrl}" alt="${p.name}" class="product-img-thumbnail"></td>
                 <td style="font-weight:500;">${p.name}</td>
-                <td>${p.category}</td>
-                <td>$${p.price.toFixed(2)}</td>
+                <td>${displayPrice}</td>
                 <td>${p.stock}</td>
                 <td>
                     <span class="badge ${p.status === 'Active' ? 'badge-active' : 'badge-sold-out'}">${p.status}</span>
@@ -91,8 +95,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                         <span class="slider"></span>
                     </label>
                 </td>
-            </tr>
-        `).join('');
+            </tr>`;
+        }).join('');
     }
 
     // ==============================
