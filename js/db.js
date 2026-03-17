@@ -2,10 +2,10 @@
 
 // Initial seed data (used only if Firestore collections are empty)
 const initialProducts = [
-  { id: 'pm-001', name: "Mystique Rose", description: "A delicate blend of Damascus Rose and warm Sandalwood. Experience luxury in every drop.", price: 85.00, category: "Floral", stock: 12, status: "Active", imageUrl: "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=400" },
-  { id: 'pm-002', name: "Desert Oud", description: "Rich, woody, and intensely captivating. Our signature Oud blend with a touch of vanilla.", price: 125.00, category: "Woody", stock: 5, status: "Active", imageUrl: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&q=80&w=400" },
-  { id: 'pm-003', name: "Mummy's Grace", description: "A calming elixir of Jasmine, Lavender, and hints of Bergamot.", price: 65.00, category: "Floral", stock: 0, status: "Sold Out", imageUrl: "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&q=80&w=400" },
-  { id: 'pm-004', name: "Golden Amber", description: "Warm amber perfectly balanced with sweet musk and subtle spices.", price: 90.00, category: "Oriental", stock: 8, status: "Active", imageUrl: "https://images.unsplash.com/photo-1587017539504-67cfbfc2cd5f?auto=format&fit=crop&q=80&w=400" }
+  { id: 'pm-001', name: "Mystique Rose", description: "A delicate blend of Damascus Rose and warm Sandalwood. Experience luxury in every drop.", prices: { '6ml': 40, '10ml': 65, '15ml': 85, '30ml': 150 }, stock: 12, status: "Active", imageUrl: "https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&q=80&w=400" },
+  { id: 'pm-002', name: "Desert Oud", description: "Rich, woody, and intensely captivating. Our signature Oud blend with a touch of vanilla.", prices: { '6ml': 60, '10ml': 95, '15ml': 125, '30ml': 220 }, stock: 5, status: "Active", imageUrl: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&q=80&w=400" },
+  { id: 'pm-003', name: "Mummy's Grace", description: "A calming elixir of Jasmine, Lavender, and hints of Bergamot.", prices: { '6ml': 30, '10ml': 50, '15ml': 65, '30ml': 115 }, stock: 0, status: "Sold Out", imageUrl: "https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&q=80&w=400" },
+  { id: 'pm-004', name: "Golden Amber", description: "Warm amber perfectly balanced with sweet musk and subtle spices.", prices: { '6ml': 45, '10ml': 70, '15ml': 90, '30ml': 160 }, stock: 8, status: "Active", imageUrl: "https://images.unsplash.com/photo-1587017539504-67cfbfc2cd5f?auto=format&fit=crop&q=80&w=400" }
 ];
 
 const initialOrders = [

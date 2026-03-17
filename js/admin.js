@@ -158,8 +158,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (prod) {
             document.getElementById('p-id').value = prod.id;
             document.getElementById('p-name').value = prod.name;
-            document.getElementById('p-price').value = prod.price;
-            document.getElementById('p-category').value = prod.category;
+            const prices = prod.prices || { '6ml': prod.price || 0, '10ml': prod.price || 0, '15ml': prod.price || 0, '30ml': prod.price || 0 };
+            document.getElementById('p-price-6ml').value = prices['6ml'] || '';
+            document.getElementById('p-price-10ml').value = prices['10ml'] || '';
+            document.getElementById('p-price-15ml').value = prices['15ml'] || '';
+            document.getElementById('p-price-30ml').value = prices['30ml'] || '';
             document.getElementById('p-stock').value = prod.stock;
             document.getElementById('p-status').value = prod.status;
             document.getElementById('p-image').value = prod.imageUrl;
@@ -175,10 +178,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         const prodData = {
             id: id || 'pm-' + Date.now().toString().slice(-6),
             name: document.getElementById('p-name').value,
-            price: parseFloat(document.getElementById('p-price').value),
-            category: document.getElementById('p-category').value,
-            stock: parseInt(document.getElementById('p-stock').value, 10),
-            status: document.getElementById('p-status').value,
+            prices: {
+                '6ml':  parseFloat(document.getElementById('p-price-6ml').value),
+                '10ml': parseFloat(document.getElementById('p-price-10ml').value),
+                '15ml': parseFloat(document.getElementById('p-price-15ml').value),
+                '30ml': parseFloat(document.getElementById('p-price-30ml').value),
+            },
+            stock:    parseInt(document.getElementById('p-stock').value, 10),
+            status:   document.getElementById('p-status').value,
             imageUrl: document.getElementById('p-image').value,
             description: document.getElementById('p-desc').value
         };
