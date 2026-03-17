@@ -21,3 +21,6 @@ firebase.initializeApp(firebaseConfig);
 
 // Global Firestore reference used by db.js
 const db = firebase.firestore();
+
+// Global Storage reference used by admin.js for image uploads
+const storage = firebase.storage();

@@ -148,6 +148,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     window.openProductModal = function() {
         productForm.reset();
         document.getElementById('p-id').value = '';
+        document.getElementById('p-image-url').value = '';
+        document.getElementById('image-preview-container').style.display = 'none';
+        document.getElementById('image-preview').src = '';
         document.getElementById('modal-title').textContent = 'Add New Product';
         productModal.classList.add('show');
     };
@@ -169,18 +172,68 @@ document.addEventListener('DOMContentLoaded', async () => {
             document.getElementById('p-price-30ml').value = prices['30ml'] || '';
             document.getElementById('p-stock').value = prod.stock;
             document.getElementById('p-status').value = prod.status;
-            document.getElementById('p-image').value = prod.imageUrl;
             document.getElementById('p-desc').value = prod.description;
+            // Show current image preview
+            document.getElementById('p-image-url').value = prod.imageUrl || '';
+            const previewContainer = document.getElementById('image-preview-container');
+            const previewImg = document.getElementById('image-preview');
+            if (prod.imageUrl) {
+                previewImg.src = prod.imageUrl;
+                previewContainer.style.display = 'block';
+            } else {
+                previewContainer.style.display = 'none';
+            }
+            document.getElementById('p-image-file').value = '';
             document.getElementById('modal-title').textContent = 'Edit Product';
             productModal.classList.add('show');
         }
     };
 
+    // Show a live preview when a file is chosen
+    window.previewSelectedImage = function(input) {
+        const file = input.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const previewContainer = document.getElementById('image-preview-container');
+            const previewImg = document.getElementById('image-preview');
+            previewImg.src = e.target.result;
+            previewContainer.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+    };
+
     productForm.addEventListener('submit', async (e) => {
         e.preventDefault();
+        const saveBtn = productForm.querySelector('[type="submit"]');
+        saveBtn.textContent = 'Saving...';
+        saveBtn.disabled = true;
+
         const id = document.getElementById('p-id').value;
+        const productId = id || 'pm-' + Date.now().toString().slice(-6);
+
+        // === Handle Image ===
+        const fileInput = document.getElementById('p-image-file');
+        const existingUrl = document.getElementById('p-image-url').value;
+        let imageUrl = existingUrl; // keep existing if no new file chosen
+
+        if (fileInput.files.length > 0) {
+            try {
+                const file = fileInput.files[0];
+                const ext = file.name.split('.').pop();
+                const storageRef = storage.ref(`products/${productId}/image.${ext}`);
+                const snapshot = await storageRef.put(file);
+                imageUrl = await snapshot.ref.getDownloadURL();
+            } catch (err) {
+                alert('Image upload failed: ' + err.message);
+                saveBtn.textContent = 'Save Product';
+                saveBtn.disabled = false;
+                return;
+            }
+        }
+
         const prodData = {
-            id: id || 'pm-' + Date.now().toString().slice(-6),
+            id: productId,
             name: document.getElementById('p-name').value,
             prices: {
                 '6ml':  parseFloat(document.getElementById('p-price-6ml').value),
@@ -190,7 +243,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             },
             stock:    parseInt(document.getElementById('p-stock').value, 10),
             status:   document.getElementById('p-status').value,
-            imageUrl: document.getElementById('p-image').value,
+            imageUrl: imageUrl,
             description: document.getElementById('p-desc').value
         };
 
@@ -199,6 +252,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         } else {
             await updateProduct(prodData);
         }
+
+        saveBtn.textContent = 'Save Product';
+        saveBtn.disabled = false;
         closeProductModal();
         await renderProductsTable();
     });
