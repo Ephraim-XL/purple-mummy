@@ -69,6 +69,27 @@ async function deleteOrder(id) {
 }
 
 // =============================
+// Reviews API (Firestore)
+// =============================
+
+async function getReviews() {
+  const snapshot = await db.collection('reviews').orderBy('date', 'desc').get();
+  return snapshot.docs.map(doc => ({ ...doc.data() }));
+}
+
+async function addReview(reviewData) {
+  const snapshot = await db.collection('reviews').get();
+  const id = 'REV-' + (1000 + snapshot.size + 1);
+  const newReview = {
+    id,
+    date: new Date().toISOString(),
+    ...reviewData
+  };
+  await db.collection('reviews').doc(id).set(newReview);
+  return newReview;
+}
+
+// =============================
 // Seed DB on First Load
 // =============================
 

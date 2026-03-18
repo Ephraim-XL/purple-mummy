@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" href="logo.png" type="image/png">
     <style>
         .cart-page-layout {
             display: flex;
@@ -116,8 +117,9 @@
 
     <header class="site-header">
         <div class="container flex items-center justify-between">
-            <a href="index.html" class="brand-logo">
-                Purple Mummy <span>ELIXIRS</span>
+            <a href="index.html" class="brand-logo" style="display:flex; align-items:center;">
+                <img src="logo.png" alt="Purple Mummy ELIXIRS Logo" style="height: 64px; margin-right: 14px; border-radius: 50%;">
+                <span style="display:inline-block;">Purple Mummy <span>ELIXIRS</span></span>
             </a>
             <nav class="nav-links">
                 <a href="index.html">Home</a>
@@ -184,7 +186,10 @@
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-brand">
-                    <div class="footer-brand-logo">Purple Mummy <span>ELIXIRS</span></div>
+                    <div class="footer-brand-logo" style="display:flex; align-items:center;">
+                        <img src="logo.png" alt="Logo" style="height: 64px; margin-right: 14px; border-radius: 50%;">
+                        <span>Purple Mummy <span style="color:var(--color-gold);">ELIXIRS</span></span>
+                    </div>
                     <p>Luxurious artisanal oil perfumes crafted to express your presence without saying a word.</p>
                 </div>
                 <div class="footer-col">
@@ -223,6 +228,33 @@
             </div>
         </div>
     </footer>
+
+    <!-- Review Modal -->
+    <div id="review-modal" class="modal" style="display:none; position:fixed; z-index:1000; left:0; top:0; width:100%; height:100%; background-color:rgba(0,0,0,0.5); align-items:center; justify-content:center;">
+        <div class="modal-content" style="background:var(--color-white); padding:2.5rem; border-radius:var(--radius-md); max-width:400px; width:90%; text-align:center;">
+            <h2 class="brand-font" style="font-size:1.8rem; margin-bottom:0.5rem; font-style:italic;">Order Confirmed!</h2>
+            <p style="color:var(--color-text-muted); font-size:0.9rem; margin-bottom:1.5rem;">Would you like to share your experience?</p>
+            <form id="review-form">
+                <input type="hidden" id="r-name">
+                <div class="form-group" style="text-align:left;">
+                    <label>Rating</label>
+                    <select id="r-rating" class="form-control" required>
+                        <option value="5">5 - Excellent</option>
+                        <option value="4">4 - Very Good</option>
+                        <option value="3">3 - Good</option>
+                        <option value="2">2 - Fair</option>
+                        <option value="1">1 - Poor</option>
+                    </select>
+                </div>
+                <div class="form-group" style="text-align:left;">
+                    <label for="r-comment">Comment</label>
+                    <textarea id="r-comment" class="form-control" rows="3" required placeholder="Tell us what you loved..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-gold" style="width:100%; margin-top:0.5rem;" id="submit-review-btn">SUBMIT TESTIMONIAL</button>
+                <button type="button" class="btn" onclick="window.location.href='index.html'" style="width:100%; margin-top:0.5rem; background:transparent; color:var(--color-text-muted); border:1px solid var(--color-border);">NO THANKS</button>
+            </form>
+        </div>
+    </div>
 
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>

@@ -166,9 +166,40 @@ document.addEventListener('DOMContentLoaded', async () => {
         setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 300); }, 3000);
     }
 
+    // Render Testimonials
+    async function renderTestimonials() {
+        const slider = document.getElementById('testimonials-slider');
+        if (!slider) return;
+
+        const reviews = await getReviews();
+        // Fallback to static if no reviews yet
+        if (reviews.length === 0) return;
+
+        // Show max 4 latest reviews
+        const latest = reviews.slice(0, 4);
+
+        slider.innerHTML = latest.map(r => `
+            <div class="testimonial-card">
+                <span class="testimonial-quote-mark">"</span>
+                <div class="testimonial-label" style="color:var(--color-gold);">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</div>
+                <p class="testimonial-quote">"${r.comment}"</p>
+                <div class="testimonial-author-row">
+                    <div class="testimonial-avatar" style="background: var(--color-gold); width:42px; height:42px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; font-weight:bold; font-family:var(--font-heading); font-size:1.2rem;">
+                        ${r.name.charAt(0).toUpperCase()}
+                    </div>
+                    <div>
+                        <div class="testimonial-author-name">${r.name}</div>
+                        <div class="testimonial-author-role">/ Verified Buyer</div>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    }
+
     // Initialize
     await initDb();
     renderHero();
     await renderProducts();
+    await renderTestimonials();
     updateCartCountUI(loadCartStorefront());
 });

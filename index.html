@@ -3,20 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <title>Purple Mummy ELIXIRS | Luxury Fragrances</title>
     <meta name="description" content="Premium artisanal oil perfumes crafted for elegance. Perfumes designed to calm your mind and lift your mood.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" href="logo.png" type="image/png">
 </head>
 <body>
 
     <!-- ===== HEADER ===== -->
     <header class="site-header">
         <div class="container flex items-center justify-between">
-            <a href="index.html" class="brand-logo">
-                Purple Mummy <span>ELIXIRS</span>
+            <a href="index.html" class="brand-logo" style="display:flex; align-items:center;">
+                <img src="logo.png" alt="Purple Mummy ELIXIRS Logo" style="height: 64px; margin-right: 14px; border-radius: 50%;">
+                <span style="display:inline-block;">Purple Mummy <span>ELIXIRS</span></span>
             </a>
 
             <nav class="nav-links">
@@ -112,7 +115,7 @@
             <div class="testimonials-bg" style="background: linear-gradient(135deg, #3d1f05 0%, #2a1208 50%, #1a0a02 100%);"></div>
             <div class="testimonials-inner container">
                 <h2 class="testimonials-title">What Our Customers Say</h2>
-                <div class="testimonials-slider">
+                <div class="testimonials-slider" id="testimonials-slider">
                     <div class="testimonial-card">
                         <span class="testimonial-quote-mark">"</span>
                         <div class="testimonial-label">Long-Lasting Elegance</div>
@@ -267,7 +270,10 @@
             <div class="footer-grid">
                 <!-- Brand -->
                 <div class="footer-brand" id="about">
-                    <div class="footer-brand-logo">Purple Mummy <span>ELIXIRS</span></div>
+                    <div class="footer-brand-logo" style="display:flex; align-items:center;">
+                        <img src="logo.png" alt="Logo" style="height: 64px; margin-right: 14px; border-radius: 50%;">
+                        <span>Purple Mummy <span style="color:var(--color-gold);">ELIXIRS</span></span>
+                    </div>
                     <p>Luxurious artisanal oil perfumes crafted to express your presence without saying a word.</p>
                     <div class="footer-social">
                         <a href="#" class="social-link" aria-label="Facebook">f</a>

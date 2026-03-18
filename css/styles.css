@@ -1197,7 +1197,27 @@ img { display: block; max-width: 100%; }
 }
 
 @media (max-width: 480px) {
-  .product-grid { grid-template-columns: 1fr; }
+  .product-grid { 
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
+  .product-info {
+    padding: 0.5rem;
+  }
+  .product-name {
+    font-size: 0.85rem;
+    margin-bottom: 0.2rem;
+  }
+  .product-desc {
+    font-size: 0.75rem;
+    margin-bottom: 0.3rem;
+  }
+  .product-price {
+    font-size: 0.8rem;
+  }
+  .product-price .price-old {
+    font-size: 0.75rem;
+  }
   .hero-text h1 { font-size: 2rem; }
   .footer-grid { grid-template-columns: 1fr; }
   .filter-tabs { justify-content: center; }

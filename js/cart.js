@@ -106,12 +106,47 @@ document.addEventListener('DOMContentLoaded', () => {
                 await createOrder(orderData);
                 cart = [];
                 saveCart();
-                alert(`Thank you, ${name}! Your order has been placed and is pending approval.`);
-                window.location.href = 'index.html';
+                
+                // Show review modal instead of redirecting immediately
+                const reviewModal = document.getElementById('review-modal');
+                if (reviewModal) {
+                    document.getElementById('r-name').value = name;
+                    reviewModal.style.display = 'flex';
+                } else {
+                    alert(`Thank you, ${name}! Your order has been placed and is pending approval.`);
+                    window.location.href = 'index.html';
+                }
             } catch (error) {
                 console.error("Checkout failed:", error);
                 alert("There was an error placing your order. Please try again.");
                 if (checkoutBtn) { checkoutBtn.textContent = 'Confirm Order'; checkoutBtn.disabled = false; }
+            }
+        });
+    }
+
+    const reviewForm = document.getElementById('review-form');
+    if (reviewForm) {
+        reviewForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('submit-review-btn');
+            btn.textContent = 'Submitting...';
+            btn.disabled = true;
+
+            const reviewData = {
+                name: document.getElementById('r-name').value,
+                rating: parseInt(document.getElementById('r-rating').value, 10),
+                comment: document.getElementById('r-comment').value
+            };
+
+            try {
+                await addReview(reviewData);
+                alert('Thank you for your review!');
+                window.location.href = 'index.html';
+            } catch (err) {
+                console.error('Failed to submit review:', err);
+                alert('Could not submit your review. Please try again later.');
+                btn.textContent = 'SUBMIT TESTIMONIAL';
+                btn.disabled = false;
             }
         });
     }
