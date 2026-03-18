@@ -241,6 +241,7 @@
                 <a href="#dashboard">Dashboard</a>
                 <a href="#products" class="active">Products</a>
                 <a href="#orders">Orders</a>
+                <a href="#reviews">Reviews</a>
                 <a href="#users">Users</a>
                 <a href="#settings">Settings</a>
             </nav>
@@ -344,6 +345,28 @@
                         </tr>
                     </thead>
                     <tbody id="admin-order-tbody">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Reviews Section -->
+            <section class="admin-section view-section" id="reviews-view">
+                <div class="section-header">
+                    <h2>Manage Reviews</h2>
+                </div>
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Review ID</th>
+                            <th>Customer</th>
+                            <th>Rating</th>
+                            <th>Comment</th>
+                            <th>Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admin-review-tbody">
                         <!-- Populated by JS -->
                     </tbody>
                 </table>

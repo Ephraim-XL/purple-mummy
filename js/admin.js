@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     if (targetId === 'dashboard-view') await renderDashboard();
                     else if (targetId === 'products-view') await renderProductsTable();
                     else if (targetId === 'orders-view') await renderOrdersTable();
+                    else if (targetId === 'reviews-view') await renderReviewsTable();
                 }
             });
         });
@@ -246,11 +247,41 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     };
 
+    // ==============================
+    // Review Actions
+    // ==============================
+    async function renderReviewsTable() {
+        const reviewTbody = document.getElementById('admin-review-tbody');
+        if (!reviewTbody) return;
+        const reviews = await getReviews();
+        reviewTbody.innerHTML = reviews.map(r => {
+            return `
+            <tr>
+                <td style="font-weight:500;">${r.id}</td>
+                <td>${r.name}</td>
+                <td style="color:var(--color-gold);">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</td>
+                <td style="max-width:250px; white-space:normal; font-size:0.85rem;">"${r.comment}"</td>
+                <td>${new Date(r.date).toLocaleDateString()}</td>
+                <td>
+                    <button class="btn" style="padding:0.25rem 0.5rem; font-size:0.75rem; background:var(--color-error); color:white;" onclick="removeReview('${r.id}')">Delete</button>
+                </td>
+            </tr>`;
+        }).join('');
+    }
+
+    window.removeReview = async function(id) {
+        if (confirm(`Permanently delete review ${id}?`)) {
+            await deleteReview(id);
+            await renderReviewsTable();
+        }
+    };
+
     // Initialize
     initNavigation();
     await renderDashboard();
     await renderProductsTable();
     await renderOrdersTable();
+    await renderReviewsTable();
 });
 
 // Global Logout

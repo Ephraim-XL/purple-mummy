@@ -89,6 +89,10 @@ async function addReview(reviewData) {
   return newReview;
 }
 
+async function deleteReview(id) {
+  await db.collection('reviews').doc(id).delete();
+}
+
 // =============================
 // Seed DB on First Load
 // =============================
