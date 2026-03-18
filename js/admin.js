@@ -83,6 +83,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <td>${p.id}</td>
                 <td><img src="${p.imageUrl}" alt="${p.name}" class="product-img-thumbnail"></td>
                 <td style="font-weight:500;">${p.name}</td>
+                <td>${p.category || 'N/A'}</td>
                 <td>${displayPrice}</td>
                 <td>${p.stock}</td>
                 <td>
@@ -112,7 +113,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                           o.status === 'Rejected' ? 'var(--color-error)' : 'var(--color-success)';
             return `
             <tr>
-                <td style="font-weight:500;">${o.id}</td>
+                <td style="font-weight:500;"><a href="#" onclick="viewOrderDetails('${o.id}')" style="color:var(--color-gold); text-decoration:underline;" title="View Order Details">${o.id}</a></td>
                 <td>${o.customerName}</td>
                 <td>${o.phoneNumber || 'N/A'}</td>
                 <td style="max-width:160px; white-space:normal; font-size:0.85rem;">${o.location || 'N/A'}</td>
@@ -149,6 +150,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     window.openProductModal = function() {
         productForm.reset();
         document.getElementById('p-id').value = '';
+        document.getElementById('p-category').value = 'Women';
         document.getElementById('p-image-url').value = '';
         document.getElementById('image-preview-container').style.display = 'none';
         document.getElementById('image-preview').src = '';
@@ -166,6 +168,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (prod) {
             document.getElementById('p-id').value = prod.id;
             document.getElementById('p-name').value = prod.name;
+            document.getElementById('p-category').value = prod.category || 'Women';
             const prices = prod.prices || { '6ml': prod.price || 0, '10ml': prod.price || 0, '15ml': prod.price || 0, '30ml': prod.price || 0 };
             document.getElementById('p-price-6ml').value = prices['6ml'] || '';
             document.getElementById('p-price-10ml').value = prices['10ml'] || '';
@@ -204,6 +207,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const prodData = {
             id: productId,
             name: document.getElementById('p-name').value,
+            category: document.getElementById('p-category').value,
             prices: {
                 '6ml':  parseFloat(document.getElementById('p-price-6ml').value),
                 '10ml': parseFloat(document.getElementById('p-price-10ml').value),
@@ -245,6 +249,38 @@ document.addEventListener('DOMContentLoaded', async () => {
             await renderOrdersTable();
             await renderDashboard();
         }
+    };
+
+    window.viewOrderDetails = async function(id) {
+        const orders = await getOrders();
+        const order = orders.find(o => o.id === id);
+        if (!order) return;
+
+        const products = await getProducts();
+        
+        document.getElementById('order-modal-title').textContent = `Order Details - ${order.id}`;
+        document.getElementById('order-modal-total').textContent = `Total: $${order.totalPrice.toFixed(2)}`;
+
+        const tbody = document.getElementById('order-items-tbody');
+        tbody.innerHTML = order.items.map(item => {
+            const prod = products.find(p => p.id === item.productId) || { name: 'Unknown Product', imageUrl: 'https://via.placeholder.com/50' };
+            const subtotal = item.price * item.quantity;
+            return `
+            <tr>
+                <td><img src="${prod.imageUrl}" alt="${prod.name}" class="product-img-thumbnail"></td>
+                <td style="font-weight:500;">${prod.name}</td>
+                <td>${item.size}</td>
+                <td>${item.quantity}</td>
+                <td>$${item.price.toFixed(2)}</td>
+                <td style="font-weight:600;">$${subtotal.toFixed(2)}</td>
+            </tr>`;
+        }).join('');
+
+        document.getElementById('order-modal').classList.add('show');
+    };
+
+    window.closeOrderModal = function() {
+        document.getElementById('order-modal').classList.remove('show');
     };
 
     // ==============================
