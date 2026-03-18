@@ -203,6 +203,53 @@ document.addEventListener('DOMContentLoaded', async () => {
         reader.readAsDataURL(file);
     };
 
+    // Helper function to compress images before upload
+    function compressImage(file, maxWidth, maxHeight, quality) {
+        return new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = event => {
+                const img = new Image();
+                img.src = event.target.result;
+                img.onload = () => {
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > height) {
+                        if (width > maxWidth) {
+                            height = Math.round((height * maxWidth) / width);
+                            width = maxWidth;
+                        }
+                    } else {
+                        if (height > maxHeight) {
+                            width = Math.round((width * maxHeight) / height);
+                            height = maxHeight;
+                        }
+                    }
+
+                    const canvas = document.createElement('canvas');
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    canvas.toBlob((blob) => {
+                        if (blob) {
+                            resolve(new File([blob], file.name.replace(/\.[^/.]+$/, "") + ".jpg", {
+                                type: 'image/jpeg',
+                                lastModified: Date.now()
+                            }));
+                        } else {
+                            resolve(file);
+                        }
+                    }, 'image/jpeg', quality);
+                };
+                img.onerror = () => resolve(file);
+            };
+            reader.onerror = () => resolve(file);
+        });
+    }
+
     productForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const saveBtn = productForm.querySelector('[type="submit"]');
@@ -219,7 +266,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         if (fileInput.files.length > 0) {
             try {
-                const file = fileInput.files[0];
+                let file = fileInput.files[0];
+                
+                // Compress the image before uploading to significantly speed up the upload
+                file = await compressImage(file, 800, 800, 0.8);
+                
                 const ext = file.name.split('.').pop();
                 const storageRef = storage.ref(`products/${productId}/image.${ext}`);
                 const snapshot = await storageRef.put(file);
