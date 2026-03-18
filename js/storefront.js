@@ -12,13 +12,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         const slides = [
             'https://images.unsplash.com/photo-1541643600914-78b084683702?auto=format&fit=crop&w=1400&q=80',
             'https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=1400&q=80',
-            'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=1400&q=80',
-            'https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?auto=format&fit=crop&w=1400&q=80',
-            'https://images.unsplash.com/photo-1587017539504-67cfbfc2cd5f?auto=format&fit=crop&w=1400&q=80'
+            'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=1400&q=80'
         ];
 
         heroSection.innerHTML = `
-            <div class="hero-carousel">
+            <section class="hero-carousel">
                 <div class="hero-slides" id="hero-slides">
                     ${slides.map((url, i) => `
                         <div class="hero-slide ${i === 0 ? 'active' : ''}" style="background-image: url('${url}');"></div>
@@ -26,18 +24,20 @@ document.addEventListener('DOMContentLoaded', async () => {
                 </div>
                 <div class="hero-overlay">
                     <div class="hero-text">
-                        <h1 class="brand-font">Unveil Your Signature Scent</h1>
-                        <p>Luxurious, artisanal, and unforgettable oil perfumes crafted for the elegant soul.</p>
-                        <a href="#shop" class="btn btn-primary">Discover the Collection</a>
+                        <h1 class="brand-font">Experience Luxury<br>In Every Drop</h1>
+                        <p>Richly made from Natural Ingredients</p>
+                        <a href="#shop" class="btn btn-ghost">SHOP MORE</a>
                     </div>
                 </div>
+                <button class="hero-nav-btn prev" onclick="prevSlide()">&#8592;</button>
+                <button class="hero-nav-btn next" onclick="nextSlide()">&#8594;</button>
                 <div class="carousel-dots" id="carousel-dots">
                     ${slides.map((_, i) => `<span class="dot ${i === 0 ? 'active' : ''}" onclick="goToSlide(${i})"></span>`).join('')}
                 </div>
-            </div>
+                <button class="hero-scroll-btn" onclick="document.getElementById('about-section').scrollIntoView({behavior:'smooth'})">&#8595;</button>
+            </section>
         `;
 
-        // Auto-advance logic
         let current = 0;
         const allSlides = heroSection.querySelectorAll('.hero-slide');
         const allDots = heroSection.querySelectorAll('.dot');
@@ -45,35 +45,36 @@ document.addEventListener('DOMContentLoaded', async () => {
         window.goToSlide = function(index) {
             allSlides[current].classList.remove('active');
             allDots[current].classList.remove('active');
-            current = index;
+            current = (index + allSlides.length) % allSlides.length;
             allSlides[current].classList.add('active');
             allDots[current].classList.add('active');
         };
 
-        setInterval(() => {
-            goToSlide((current + 1) % allSlides.length);
-        }, 4500);
+        window.nextSlide = () => goToSlide(current + 1);
+        window.prevSlide = () => goToSlide(current - 1);
+
+        setInterval(nextSlide, 5000);
     }
 
     // Render Products
     async function renderProducts() {
         if (!productGrid) return;
-        productGrid.innerHTML = '<p style="text-align:center; padding:2rem; color:var(--color-text-light);">Loading...</p>';
+        productGrid.innerHTML = '<p style="text-align:center; padding:5rem 0; width:100%; font-family:var(--font-heading); font-size:1.5rem; font-style:italic; color:var(--color-text-muted);">Loading Collection...</p>';
 
         const products = await getProducts();
 
         if (products.length === 0) {
-            productGrid.innerHTML = '<p style="text-align:center;">No products available at the moment.</p>';
+            productGrid.innerHTML = '<p style="text-align:center; padding:3rem 0; width:100%;">Our new collection is arriving soon.</p>';
             return;
         }
 
         productGrid.innerHTML = products.map(product => {
             const isSoldOut = product.status === 'Sold Out';
-            const btnClass = isSoldOut ? 'btn-secondary disabled' : 'btn-primary';
+            const btnClass = isSoldOut ? 'btn-outline disabled' : 'btn-gold';
             const btnText = isSoldOut ? 'Sold Out' : 'Add to Bag';
             const ribbon = isSoldOut ? `<div class="ribbon badge-sold-out">Sold Out</div>` : '';
-            // Use per-size prices, fallback to old single 'price' field if migrating
-            const prices = product.prices || { '6ml': product.price, '10ml': product.price, '15ml': product.price, '30ml': product.price };
+            
+            const prices = product.prices || { '6ml': product.price || 0 };
             const defaultPrice = prices['6ml'] || 0;
 
             return `
@@ -83,12 +84,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                         <img src="${product.imageUrl || 'https://via.placeholder.com/400x400?text=Perfume'}" alt="${product.name}" class="product-image">
                     </div>
                     <div class="product-info">
-                        <h3 class="product-name brand-font">${product.name}</h3>
-                        <p class="product-desc">${product.description}</p>
+                        <h3 class="product-name">${product.name}</h3>
+                        <p class="product-desc">${product.description || ''}</p>
 
-                        <div class="form-group" style="margin-bottom: 1rem;">
-                            <label for="size-${product.id}" style="font-size: 0.8rem; color: var(--color-text-light); font-weight: 500;">Select Size:</label>
-                            <select id="size-${product.id}" class="form-control" onchange="updatePriceDisplay('${product.id}')" style="padding: 0.5rem;" ${isSoldOut ? 'disabled' : ''} data-prices='${JSON.stringify(prices)}'>
+                        <div class="form-group" style="margin-bottom: 1.25rem;">
+                            <label for="size-${product.id}" style="font-size: 0.75rem; color: var(--color-text-muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px;">Select Size:</label>
+                            <select id="size-${product.id}" class="form-control" onchange="updatePriceDisplay('${product.id}')" style="padding: 0.6rem;" ${isSoldOut ? 'disabled' : ''} data-prices='${JSON.stringify(prices)}'>
                                 <option value="6ml">6ml</option>
                                 <option value="10ml">10ml</option>
                                 <option value="15ml">15ml</option>
@@ -96,9 +97,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                             </select>
                         </div>
 
-                        <div class="product-meta flex justify-between items-center">
-                            <span class="product-price" id="price-${product.id}">$${defaultPrice.toFixed(2)}</span>
-                            <button class="btn ${btnClass}" onclick="addToCart('${product.id}')" ${isSoldOut ? 'disabled' : ''}>
+                        <div class="product-meta flex justify-between items-center" style="margin-top:auto;">
+                            <span class="product-price" id="price-${product.id}" style="font-family:var(--font-heading); font-size:1.1rem; color:var(--color-gold-dark); font-weight:600;">GHC ${defaultPrice.toFixed(2)}</span>
+                            <button class="btn ${btnClass}" onclick="addToCart('${product.id}')" ${isSoldOut ? 'disabled' : ''} style="padding: 0.6rem 1rem; font-size: 0.7rem;">
                                 ${btnText}
                             </button>
                         </div>

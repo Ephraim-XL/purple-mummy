@@ -4,14 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login | Purple Mummy ELIXIRS</title>
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
     <style>
         body {
-            background-color: var(--color-bg);
+            background: var(--color-surface);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -20,43 +19,45 @@
         .login-card {
             background: var(--color-white);
             padding: 3rem;
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--color-border);
             width: 100%;
-            max-width: 400px;
+            max-width: 420px;
             text-align: center;
         }
-        .brand-logo {
-            justify-content: center;
+        .login-brand {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: var(--color-text-main);
+            margin-bottom: 0.5rem;
+        }
+        .login-brand span { color: var(--color-gold); }
+        .login-subtitle {
+            font-size: 0.85rem;
+            color: var(--color-text-muted);
             margin-bottom: 2rem;
-            font-size: 2rem;
         }
-        .form-group {
-            text-align: left;
-            margin-bottom: 1.5rem;
-        }
+        .form-group { text-align: left; margin-bottom: 1.25rem; }
         .error-msg {
             color: var(--color-error);
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             margin-bottom: 1rem;
             display: none;
+            background: rgba(192,57,43,0.06);
+            border: 1px solid rgba(192,57,43,0.2);
+            padding: 0.6rem 1rem;
+            text-align: left;
         }
-        .error-msg.show {
-            display: block;
-        }
+        .error-msg.show { display: block; }
     </style>
 </head>
 <body>
-
     <div class="login-card">
-        <a href="index.html" class="brand-logo brand-font">
-            PM <span>ELIXIRS</span>
-        </a>
-        <h2 style="margin-bottom: 0.5rem; font-weight: 600;">Admin Portal</h2>
-        <p class="text-light" style="margin-bottom: 2rem; font-size: 0.9rem;">Sign in to manage your store.</p>
-        
+        <div class="login-brand">Purple Mummy <span>ELIXIRS</span></div>
+        <p class="login-subtitle">Sign in to manage your store.</p>
+
         <div id="login-error" class="error-msg">Invalid username or password.</div>
-        
+
         <form id="login-form">
             <div class="form-group">
                 <label for="username">Username</label>
@@ -66,26 +67,23 @@
                 <label for="password">Password</label>
                 <input type="password" id="password" class="form-control" required placeholder="Enter password">
             </div>
-            
-            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
-                Sign In
+            <button type="submit" class="btn btn-gold" style="width:100%;margin-top:0.5rem;">
+                SIGN IN
             </button>
         </form>
-        
-        <div style="margin-top: 2rem; font-size: 0.8rem; color: var(--color-text-light);">
-            <p>Hint: Use <strong>admin</strong> / <strong>admin123</strong></p>
-            <p style="margin-top: 0.5rem;"><a href="index.html" style="text-decoration: underline;">Return to Storefront</a></p>
+
+        <div style="margin-top:1.75rem;font-size:0.78rem;color:var(--color-text-muted);">
+            <p>Hint: <strong style="color:var(--color-text-body)">admin</strong> / <strong style="color:var(--color-text-body)">admin123</strong></p>
+            <p style="margin-top:0.5rem;"><a href="index.html" style="color:var(--color-gold);">← Return to Storefront</a></p>
         </div>
     </div>
 
     <script>
         document.getElementById('login-form').addEventListener('submit', function(e) {
             e.preventDefault();
-            
             const user = document.getElementById('username').value;
             const pass = document.getElementById('password').value;
             const errorEl = document.getElementById('login-error');
-            
             if (user === 'admin' && pass === 'admin123') {
                 sessionStorage.setItem('pm_admin_auth', 'true');
                 window.location.href = 'admin.html';
@@ -93,8 +91,6 @@
                 errorEl.classList.add('show');
             }
         });
-        
-        // If already logged in, redirect
         if (sessionStorage.getItem('pm_admin_auth') === 'true') {
             window.location.replace('admin.html');
         }
