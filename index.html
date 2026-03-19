@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Purple Mummy ELIXIRS | Luxury Fragrances</title>
+    <meta name="description" content="Premium artisanal oil perfumes crafted for elegance. Perfumes designed to calm your mind and lift your mood.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" href="logo.png" type="image/png">
+</head>
+<body>
+
+    <!-- ===== HEADER ===== -->
+    <header class="site-header">
+        <div class="container flex items-center justify-between">
+            <a href="index.html" class="brand-logo" style="display:flex; align-items:center;">
+                <img src="logo.png" alt="Purple Mummy ELIXIRS Logo" style="height: 64px; margin-right: 14px; border-radius: 50%;">
+                <span style="display:inline-block;">Purple Mummy <span>ELIXIRS</span></span>
+            </a>
+
+            <nav class="nav-links">
+                <a href="index.html" class="active">Home</a>
+                <a href="#shop">Shop</a>
+                <a href="#about">About Us</a>
+                <a href="#contact">Contact Us</a>
+            </nav>
+
+            <div class="header-actions">
+                <a href="cart.html" class="cart-link" style="display:flex; align-items:center; gap:6px;">
+                    🛍
+                    <span class="cart-count-badge" id="cart-count">0</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+
+        <!-- ===== HERO SLIDER ===== -->
+        <div id="hero-section">
+            <!-- Inserted by storefront.js — fallback below -->
+            <section class="hero-carousel" id="hero-fallback">
+                <div class="hero-slides">
+                    <div class="hero-slide active" style="background-image: linear-gradient(135deg, #2a1208 0%, #4a2810 50%, #2a1a0e 100%);">
+                    </div>
+                </div>
+                <div class="hero-overlay">
+                    <div class="hero-text">
+                        <h1>Experience Luxury<br>In Every Drop</h1>
+                        <p>Richly made from Natural Ingredients</p>
+                        <a href="#shop" class="btn btn-ghost">SHOP MORE</a>
+                    </div>
+                </div>
+                <button class="hero-nav-btn prev" onclick="">&#8592;</button>
+                <button class="hero-nav-btn next" onclick="">&#8594;</button>
+                <div class="carousel-dots">
+                    <span class="dot active"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                </div>
+                <button class="hero-scroll-btn" onclick="document.getElementById('about-section').scrollIntoView({behavior:'smooth'})">&#8595;</button>
+            </section>
+        </div>
+
+        <!-- ===== ABOUT SPLIT ===== -->
+        <section class="about-split" id="about-section" id="about">
+            <div class="about-split-image">
+                <!-- Placeholder gradient if no image -->
+                <div style="width:100%;height:100%;min-height:420px;background:linear-gradient(135deg,#e8d5b7,#ffffff); display:flex; align-items:center; justify-content:center;">
+                    <img src="logo.png" alt="Purple Mummy ELIXIRS Logo" style="width: 220px; height: 220px; border-radius: 50%; object-fit: cover; box-shadow: 0 20px 40px rgba(0,0,0,0.1);">
+                </div>
+            </div>
+            <div class="about-split-content">
+                <span class="section-tag">Our Story</span>
+                <h2 class="section-title">Say It With<br>Fragrance</h2>
+                <p>For those who value presence over noise, and authenticity over excess. Our artisanal oil perfumes are crafted to express who you are without saying a word.</p>
+                <a href="#shop" class="btn btn-gold">MORE ABOUT US</a>
+            </div>
+        </section>
+
+        <!-- ===== SHOP / PRODUCT GRID ===== -->
+        <section id="shop" class="shop-section">
+            <div class="container">
+                <div class="shop-section-header">
+                    <h2 class="section-title center" style="font-style:italic;">
+                        Perfumes designed to calm your<br>mind and lift your mood.
+                    </h2>
+                </div>
+
+                <!-- Filter tabs -->
+                <div class="filter-tabs" id="filter-tabs">
+                    <button class="filter-tab active" data-filter="all">All</button>
+                    <button class="filter-tab" data-filter="men">Men</button>
+                    <button class="filter-tab" data-filter="women">Women</button>
+                    <button class="filter-tab" data-filter="unisex">Unisex</button>
+                    <button class="filter-tab" data-filter="luxury">Luxury</button>
+                </div>
+
+                <div id="product-grid" class="grid product-grid">
+                    <!-- Products rendered by storefront.js -->
+                </div>
+
+                <div class="shop-more-wrap">
+                    <a href="#shop" class="btn btn-outline">SHOP MORE</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== TESTIMONIALS ===== -->
+        <section class="testimonials-section">
+            <div class="testimonials-bg" style="background: linear-gradient(135deg, #3d1f05 0%, #2a1208 50%, #1a0a02 100%);"></div>
+            <div class="testimonials-inner container">
+                <h2 class="testimonials-title">What Our Customers Say</h2>
+                <div class="testimonials-slider" id="testimonials-slider">
+                    <div class="testimonial-card">
+                        <span class="testimonial-quote-mark">"</span>
+                        <div class="testimonial-label">Long-Lasting Elegance</div>
+                        <p class="testimonial-quote">"From morning to evening, the scent stays with me everywhere I go. Absolutely love it."</p>
+                        <div class="testimonial-author-row">
+                            <div class="testimonial-avatar" style="background: #d4c0a8; width:42px; height:42px; border-radius:50%;"></div>
+                            <div>
+                                <div class="testimonial-author-name">Grace Owusu</div>
+                                <div class="testimonial-author-role">/ Customer</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <span class="testimonial-quote-mark">"</span>
+                        <div class="testimonial-label">Compliment</div>
+                        <p class="testimonial-quote">"Everywhere I go, people ask what fragrance I'm wearing. It's unique, and always admired."</p>
+                        <div class="testimonial-author-row">
+                            <div class="testimonial-avatar" style="background: #b8a890; width:42px; height:42px; border-radius:50%;"></div>
+                            <div>
+                                <div class="testimonial-author-name">Vanessa Asare</div>
+                                <div class="testimonial-author-role">/ Customer</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== FEATURE BADGES ===== -->
+        <section class="feature-badges">
+            <div class="container">
+                <div class="feature-badges-grid">
+                    <div class="feature-badge">
+                        <div class="feature-badge-icon">🌱</div>
+                        <h4>100% Organic</h4>
+                        <p>Natural ingredients</p>
+                    </div>
+                    <div class="feature-badge">
+                        <div class="feature-badge-icon">🛡</div>
+                        <h4>Safe For The Body</h4>
+                        <p>All skin types</p>
+                    </div>
+                    <div class="feature-badge">
+                        <div class="feature-badge-icon">🚚</div>
+                        <h4>Free Delivery</h4>
+                        <p>Orders over GHC 1000</p>
+                    </div>
+                    <div class="feature-badge">
+                        <div class="feature-badge-icon">✦</div>
+                        <h4>Luxury Feel</h4>
+                        <p>Shop with Confidence</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== FEATURED SCENTS ===== -->
+        <section class="featured-scents" id="collections">
+            <div class="container">
+                <h2 class="section-title center" style="margin-bottom:2.5rem; font-style:italic;">Ignite your presence with every scent.</h2>
+                <div class="featured-grid">
+                    <div class="featured-card">
+                        <div style="width:100%;height:100%;background:linear-gradient(135deg,#2a0a15,#4a1020,#1a0508);"></div>
+                        <div class="featured-card-overlay">
+                            <div class="featured-card-name">My Confession</div>
+                            <div class="featured-card-desc">A mature, sultry feminine scent that wraps the skin in deep florals, warm sweetness and sensual musk.</div>
+                        </div>
+                    </div>
+                    <div class="featured-card">
+                        <div style="width:100%;height:100%;background:linear-gradient(135deg,#1a2a08,#2a4010,#0a1504);"></div>
+                        <div class="featured-card-overlay">
+                            <div class="featured-card-name">Captive (Female)</div>
+                            <div class="featured-card-desc">An addictive fusion of juicy dark red berries, alluring jasmine and a signature fruity gourmand.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== FAQ SECTION ===== -->
+        <section id="faq" class="faq-section">
+            <div class="container">
+                <div class="faq-layout">
+                    <div class="faq-content">
+                        <h2 class="section-title">Your Questions<br>About Delivery</h2>
+
+                        <div class="faq-list" style="margin-top:2rem;">
+                            <div class="faq-item open">
+                                <button class="faq-question">
+                                    Do you offer delivery services?
+                                    <i class="faq-icon">+</i>
+                                </button>
+                                <div class="faq-answer">
+                                    Yes, we deliver orders directly to customers on scheduled days. We also use bus stations for extended areas like <strong>Prampram, Dawhenya, Ashaiman, and Afienya</strong>, as well as other far areas within Ghana.
+                                </div>
+                            </div>
+                            <div class="faq-item">
+                                <button class="faq-question">
+                                    Is delivery free or are there extra fees?
+                                    <i class="faq-icon">+</i>
+                                </button>
+                                <div class="faq-answer">
+                                    Delivery is free for orders above GHC 1,000. Orders below this amount attract a fee based on location. All orders going to bus stations or parcel offices attract an extra GHC 15 fee.
+                                </div>
+                            </div>
+                            <div class="faq-item">
+                                <button class="faq-question">
+                                    How can I receive my product if I live far from Accra?
+                                    <i class="faq-icon">+</i>
+                                </button>
+                                <div class="faq-answer">
+                                    Customers in far areas within Ghana can receive their orders through bus stations or parcel offices. Deliveries to these stations (e.g., Circle, Kaneshie) attract an additional GHC 15 fee.
+                                </div>
+                            </div>
+                            <div class="faq-item">
+                                <button class="faq-question">
+                                    What are the delivery days and hours?
+                                    <i class="faq-icon">+</i>
+                                </button>
+                                <div class="faq-answer">
+                                    Deliveries are made between 10:00am and 5:00pm on Tuesdays, Thursdays, and Saturdays.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Decorative image -->
+                    <div class="faq-image" style="position:relative;">
+                        <div style="width:100%;height:100%;min-height:480px;background:radial-gradient(circle at 55% 40%, #e8e0d4 0%, #d4c8b8 60%, #c0b090 100%); display:flex; align-items:center; justify-content:center;">
+                            <span style="font-family:'Cormorant Garamond',serif; font-size:6rem; color:rgba(120,80,20,0.15); font-style:italic;">PM</span>
+                        </div>
+                        <div class="faq-gold-circle" style="position:absolute;bottom:-30px;left:-30px;width:180px;height:180px;border-radius:50%;background:var(--color-gold);z-index:-1;"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== CTA BANNER ===== -->
+        <section class="cta-banner" id="contact">
+            <div class="cta-banner-bg" style="background: linear-gradient(135deg, #1a100a 0%, #2a1a0e 50%, #1a100a 100%);"></div>
+            <div class="cta-banner-content">
+                <h2>Unforgettable Scents. Unmatched Quality.</h2>
+                <a href="cart.html" class="btn btn-ghost">CONTACT US</a>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <!-- Brand -->
+                <div class="footer-brand" id="about">
+                    <div class="footer-brand-logo" style="display:flex; align-items:center;">
+                        <img src="logo.png" alt="Logo" style="height: 64px; margin-right: 14px; border-radius: 50%;">
+                        <span>Purple Mummy <span style="color:var(--color-gold);">ELIXIRS</span></span>
+                    </div>
+                    <p>Luxurious artisanal oil perfumes crafted to express your presence without saying a word.</p>
+                    <div class="footer-social">
+                        <a href="#" class="social-link" aria-label="Facebook">f</a>
+                        <a href="#" class="social-link" aria-label="TikTok">t</a>
+                        <a href="#" class="social-link" aria-label="Instagram">in</a>
+                    </div>
+                </div>
+
+                <!-- Information -->
+                <div class="footer-col">
+                    <h5>Information</h5>
+                    <ul>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#shop">Shop</a></li>
+                        <li><a href="#contact">Contact Us</a></li>
+                        <li><a href="#faq">FAQs</a></li>
+                    </ul>
+                </div>
+
+                <!-- Policy -->
+                <div class="footer-col">
+                    <h5>Our Policy</h5>
+                    <ul>
+                        <li><a href="#">Payment Policy</a></li>
+                        <li><a href="#">Return and Refund Policy</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact -->
+                <div class="footer-col">
+                    <h5>Contact Us</h5>
+                    <div class="footer-contact">
+                        <div class="footer-contact-item">
+                            <strong>Phone Number:</strong>
+                            <span>+233 594 290 701</span>
+                        </div>
+                        <div class="footer-contact-item">
+                            <strong>Email:</strong>
+                            <span>purplemummyelixirs@gmail.com</span>
+                        </div>
+                        <div class="footer-contact-item">
+                            <strong>Shop Hours:</strong>
+                            <span>Mon – Sat 8:30am – 7:00pm</span>
+                        </div>
+                        <div class="footer-contact-item">
+                            <strong>Delivery Days:</strong>
+                            <span>Tuesday, Thursday, Saturday</span>
+                        </div>
+                        <div class="footer-contact-item">
+                            <strong>Online Shopping:</strong>
+                            <span>24/7</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>COPYRIGHT 2025 © PURPLE MUMMY ELIXIRS. ALL RIGHTS RESERVED.</p>
+                <a href="login.html">Admin <strong>Portal</strong></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="js/firebase-config.js"></script>
+    <script src="js/db.js"></script>
+    <script src="js/storefront.js"></script>
+
+    <script>
+        // FAQ Accordion
+        document.querySelectorAll('.faq-question').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const item = btn.closest('.faq-item');
+                const isOpen = item.classList.contains('open');
+                document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+                if (!isOpen) item.classList.add('open');
+            });
+        });
+
+        // Filter tabs
+        document.querySelectorAll('.filter-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                if (window.filterProducts) {
+                    window.filterProducts(tab.dataset.filter);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
