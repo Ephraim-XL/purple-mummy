@@ -99,17 +99,19 @@ document.addEventListener('DOMContentLoaded', async () => {
                         <img src="${product.imageUrl || 'https://via.placeholder.com/400x400?text=Perfume'}" alt="${product.name}" class="product-image">
                     </div>
                     <div class="product-info">
+                        ${product.category ? `<span class="product-category">${product.category}</span>` : ''}
                         <h3 class="product-name">${product.name}</h3>
                         <p class="product-desc">${product.description || ''}</p>
 
                         <div class="form-group" style="margin-bottom: 1.25rem;">
-                            <label for="size-${product.id}" style="font-size: 0.75rem; color: var(--color-text-muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px;">Select Size:</label>
-                            <select id="size-${product.id}" class="form-control" onchange="updatePriceDisplay('${product.id}')" style="padding: 0.6rem;" ${isSoldOut ? 'disabled' : ''} data-prices='${JSON.stringify(prices)}'>
-                                <option value="6ml">6ml</option>
-                                <option value="10ml">10ml</option>
-                                <option value="15ml">15ml</option>
-                                <option value="30ml">30ml</option>
-                            </select>
+                            <label style="font-size: 0.75rem; color: var(--color-text-muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px;">Select Size:</label>
+                            <div class="size-buttons" id="size-container-${product.id}" data-prices='${JSON.stringify(prices)}'>
+                                <button class="size-btn active" onclick="selectSize('${product.id}', '6ml')" ${isSoldOut ? 'disabled' : ''}>6ml</button>
+                                <button class="size-btn" onclick="selectSize('${product.id}', '10ml')" ${isSoldOut ? 'disabled' : ''}>10ml</button>
+                                <button class="size-btn" onclick="selectSize('${product.id}', '15ml')" ${isSoldOut ? 'disabled' : ''}>15ml</button>
+                                <button class="size-btn" onclick="selectSize('${product.id}', '30ml')" ${isSoldOut ? 'disabled' : ''}>30ml</button>
+                            </div>
+                            <input type="hidden" id="size-${product.id}" value="6ml">
                         </div>
 
                         <div class="product-meta flex justify-between items-center" style="margin-top:auto;">
@@ -124,14 +126,30 @@ document.addEventListener('DOMContentLoaded', async () => {
         }).join('');
     }
 
-    // Update price display when size changes (reads from data attribute)
-    window.updatePriceDisplay = function(productId) {
-        const selectEl = document.getElementById(`size-${productId}`);
-        const priceEl = document.getElementById(`price-${productId}`);
-        if (!selectEl || !priceEl) return;
-        const prices = JSON.parse(selectEl.dataset.prices);
-        const selectedPrice = prices[selectEl.value] || 0;
-        priceEl.textContent = `$${selectedPrice.toFixed(2)}`;
+    // Select size via buttons
+    window.selectSize = function(productId, size) {
+        // Update hidden input
+        const hiddenInput = document.getElementById(`size-${productId}`);
+        if (hiddenInput) hiddenInput.value = size;
+
+        // Update active class on buttons
+        const container = document.getElementById(`size-container-${productId}`);
+        if (container) {
+            const buttons = container.querySelectorAll('.size-btn');
+            buttons.forEach(btn => {
+                if (btn.textContent.trim() === size) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+
+            // Update price text
+            const priceEl = document.getElementById(`price-${productId}`);
+            const prices = JSON.parse(container.dataset.prices || "{}");
+            const selectedPrice = prices[size] || 0;
+            if (priceEl) priceEl.textContent = `GHC ${selectedPrice.toFixed(2)}`;
+        }
     };
 
     // Cart stays in localStorage

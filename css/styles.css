@@ -614,6 +614,57 @@ img { display: block; max-width: 100%; }
   margin-top: 2.5rem;
 }
 
+/* ============ Product Sizes & Category ============ */
+.product-category {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--color-gold);
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+  display: block;
+}
+
+.size-buttons {
+  display: flex;
+  gap: 0.4rem;
+  margin-top: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.size-btn {
+  flex: 1;
+  min-width: 0;
+  padding: 0.5rem 0.2rem;
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.size-btn:hover:not(:disabled) {
+  border-color: var(--color-gold-light);
+  color: var(--color-gold-dark);
+}
+
+.size-btn.active {
+  background: var(--color-gold);
+  color: var(--color-white);
+  border-color: var(--color-gold);
+  font-weight: 500;
+}
+
+.size-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: var(--color-surface);
+}
+
 /* ============ Testimonials ============ */
 .testimonials-section {
   position: relative;
