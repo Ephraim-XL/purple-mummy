@@ -356,11 +356,14 @@
             });
         });
 
-        // Filter tabs (UI only — storefront.js handles filtering if needed)
+        // Filter tabs
         document.querySelectorAll('.filter-tab').forEach(tab => {
             tab.addEventListener('click', () => {
                 document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
                 tab.classList.add('active');
+                if (window.filterProducts) {
+                    window.filterProducts(tab.dataset.filter);
+                }
             });
         });
     </script>

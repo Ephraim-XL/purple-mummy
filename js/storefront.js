@@ -57,12 +57,27 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // Render Products
-    async function renderProducts() {
+    window.allProducts = [];
+
+    async function loadProducts() {
         if (!productGrid) return;
         productGrid.innerHTML = '<p style="text-align:center; padding:5rem 0; width:100%; font-family:var(--font-heading); font-size:1.5rem; font-style:italic; color:var(--color-text-muted);">Loading Collection...</p>';
 
-        const products = await getProducts();
+        window.allProducts = await getProducts();
+        renderProductGrid(window.allProducts);
+    }
 
+    window.filterProducts = function(category) {
+        if (category === 'all') {
+            renderProductGrid(window.allProducts);
+        } else {
+            const filtered = window.allProducts.filter(p => p.category && p.category.toLowerCase() === category.toLowerCase());
+            renderProductGrid(filtered);
+        }
+    };
+
+    function renderProductGrid(products) {
+        if (!productGrid) return;
         if (products.length === 0) {
             productGrid.innerHTML = '<p style="text-align:center; padding:3rem 0; width:100%;">Our new collection is arriving soon.</p>';
             return;
@@ -199,7 +214,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Initialize
     await initDb();
     renderHero();
-    await renderProducts();
+    await loadProducts();
     await renderTestimonials();
     updateCartCountUI(loadCartStorefront());
 });
