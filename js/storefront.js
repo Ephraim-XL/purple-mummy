@@ -90,7 +90,22 @@ document.addEventListener('DOMContentLoaded', async () => {
             const ribbon = isSoldOut ? `<div class="ribbon badge-sold-out">Sold Out</div>` : '';
             
             const prices = product.prices || { '6ml': product.price || 0 };
-            const defaultPrice = prices['6ml'] || 0;
+            const stocks = typeof product.stock === 'object' ? product.stock : { '6ml': product.stock || 0 };
+
+            const soldOutSizes = product.soldOutSizes || [];
+
+            // Find first available size (not sold out and has stock)
+            const sizeList = ['6ml', '10ml', '20ml', '30ml', '50ml'];
+            let defaultSize = '6ml';
+            if (!isSoldOut) {
+                for (let s of sizeList) {
+                    if ((stocks[s] || 0) > 0 && !soldOutSizes.includes(s)) {
+                        defaultSize = s;
+                        break;
+                    }
+                }
+            }
+            const defaultPrice = prices[defaultSize] || prices['6ml'] || 0;
 
             return `
                 <div class="product-card">
@@ -106,12 +121,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                         <div class="form-group" style="margin-bottom: 1.25rem;">
                             <label style="font-size: 0.75rem; color: var(--color-text-muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px;">Select Size:</label>
                             <div class="size-buttons" id="size-container-${product.id}" data-prices='${JSON.stringify(prices)}'>
-                                <button class="size-btn active" onclick="selectSize('${product.id}', '6ml')" ${isSoldOut ? 'disabled' : ''}>6ml</button>
-                                <button class="size-btn" onclick="selectSize('${product.id}', '10ml')" ${isSoldOut ? 'disabled' : ''}>10ml</button>
-                                <button class="size-btn" onclick="selectSize('${product.id}', '15ml')" ${isSoldOut ? 'disabled' : ''}>15ml</button>
-                                <button class="size-btn" onclick="selectSize('${product.id}', '30ml')" ${isSoldOut ? 'disabled' : ''}>30ml</button>
+                                <button class="size-btn ${defaultSize === '6ml' ? 'active' : ''}" onclick="selectSize('${product.id}', '6ml')" ${(isSoldOut || (stocks['6ml'] || 0) <= 0 || soldOutSizes.includes('6ml')) ? 'disabled' : ''}>6ml</button>
+                                <button class="size-btn ${defaultSize === '10ml' ? 'active' : ''}" onclick="selectSize('${product.id}', '10ml')" ${(isSoldOut || (stocks['10ml'] || 0) <= 0 || soldOutSizes.includes('10ml')) ? 'disabled' : ''}>10ml</button>
+                                <button class="size-btn ${defaultSize === '20ml' ? 'active' : ''}" onclick="selectSize('${product.id}', '20ml')" ${(isSoldOut || (stocks['20ml'] || 0) <= 0 || soldOutSizes.includes('20ml')) ? 'disabled' : ''}>20ml</button>
+                                <button class="size-btn ${defaultSize === '30ml' ? 'active' : ''}" onclick="selectSize('${product.id}', '30ml')" ${(isSoldOut || (stocks['30ml'] || 0) <= 0 || soldOutSizes.includes('30ml')) ? 'disabled' : ''}>30ml</button>
+                                <button class="size-btn ${defaultSize === '50ml' ? 'active' : ''}" onclick="selectSize('${product.id}', '50ml')" ${(isSoldOut || (stocks['50ml'] || 0) <= 0 || soldOutSizes.includes('50ml')) ? 'disabled' : ''}>50ml</button>
                             </div>
-                            <input type="hidden" id="size-${product.id}" value="6ml">
+                            <input type="hidden" id="size-${product.id}" value="${defaultSize}">
                         </div>
 
                         <div class="product-meta flex justify-between items-center" style="margin-top:auto;">
@@ -168,6 +184,18 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const selectEl = document.getElementById(`size-${productId}`);
         const selectedSize = selectEl ? selectEl.value : '6ml';
+
+        // Check if that specific size is sold out
+        const soldOutSizes = product.soldOutSizes || [];
+        if (soldOutSizes.includes(selectedSize)) {
+            showToast(`${selectedSize} is currently sold out`);
+            return;
+        }
+
+        // Determine how much stock is available for this size
+        const stocks = typeof product.stock === 'object' ? product.stock : {};
+        const availableStock = stocks[selectedSize] !== undefined ? stocks[selectedSize] : (product.stock || 0);
+
         const prices = product.prices || {};
         const actualPrice = prices[selectedSize] || product.price || 0;
         const cartItemId = `${productId}_${selectedSize}`;
@@ -176,9 +204,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         const cartItem = cartData.find(item => item.cartId === cartItemId);
 
         if (cartItem) {
+            if (cartItem.quantity >= availableStock) {
+                showToast(`Only ${availableStock} unit(s) of ${product.name} (${selectedSize}) in stock`);
+                return;
+            }
             cartItem.quantity += 1;
         } else {
-            cartData.push({ ...product, cartId: cartItemId, size: selectedSize, price: actualPrice, quantity: 1 });
+            if (availableStock <= 0) {
+                showToast(`${product.name} (${selectedSize}) is out of stock`);
+                return;
+            }
+            cartData.push({ ...product, cartId: cartItemId, size: selectedSize, price: actualPrice, quantity: 1, maxStock: availableStock });
         }
 
         saveCartStorefront(cartData);

@@ -42,11 +42,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 <img src="${item.imageUrl}" alt="${item.name}" class="cart-item-img">
                 <div class="cart-item-details">
                     <div class="cart-item-title brand-font">${item.name} <span style="font-size: 0.9rem; color: var(--color-text-light);">(${item.size})</span></div>
-                    <div class="cart-item-price">$${item.price.toFixed(2)}</div>
+                    <div class="cart-item-price">GHC ${item.price.toFixed(2)}</div>
+                    ${item.maxStock !== undefined ? `<div style="font-size:0.78rem; color:var(--color-text-light); margin-bottom:4px;">Stock available: ${item.maxStock}</div>` : ''}
                     <div class="cart-item-actions">
                         <button class="qty-btn" onclick="updateQuantity('${item.cartId}', -1)">-</button>
                         <span class="qty-display">${item.quantity}</span>
-                        <button class="qty-btn" onclick="updateQuantity('${item.cartId}', 1)">+</button>
+                        <button class="qty-btn" onclick="updateQuantity('${item.cartId}', 1)" ${item.maxStock !== undefined && item.quantity >= item.maxStock ? 'disabled style="opacity:0.4; cursor:not-allowed;"' : ''}>+</button>
                         <button class="remove-btn" onclick="removeItem('${item.cartId}')">Remove</button>
                     </div>
                 </div>
@@ -61,8 +62,20 @@ document.addEventListener('DOMContentLoaded', () => {
     window.updateQuantity = function(cartId, delta) {
         const item = cart.find(i => i.cartId === cartId);
         if (item) {
-            item.quantity += delta;
-            if (item.quantity <= 0) cart = cart.filter(i => i.cartId !== cartId);
+            const newQty = item.quantity + delta;
+            if (newQty <= 0) {
+                cart = cart.filter(i => i.cartId !== cartId);
+            } else if (item.maxStock !== undefined && newQty > item.maxStock) {
+                // Show a small alert or just silently cap
+                const msg = document.createElement('div');
+                msg.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:0.5rem 1.2rem;border-radius:6px;font-size:0.85rem;z-index:9999;';
+                msg.textContent = `Only ${item.maxStock} unit(s) available`;
+                document.body.appendChild(msg);
+                setTimeout(() => msg.remove(), 2500);
+                return;
+            } else {
+                item.quantity = newQty;
+            }
             saveCart();
             renderCart();
         }

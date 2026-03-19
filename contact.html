@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Purple Mummy | Luxury Fragrances</title>
+    <meta name="description" content="Get in touch with Purple Mummy ELIXIRS. We'd love to hear from you.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" href="logo.png" type="image/png">
+    <style>
+        /* ---- Page Hero ---- */
+        .contact-hero {
+            background: linear-gradient(135deg, #1a100a 0%, #2e1a0e 50%, #1a100a 100%);
+            padding: 5rem 0 4rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .contact-hero::before {
+            content: 'PM';
+            position: absolute;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 20rem;
+            font-style: italic;
+            color: rgba(180,130,40,0.06);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            white-space: nowrap;
+        }
+        .contact-hero-tag {
+            display: inline-block;
+            font-size: 0.78rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--color-gold);
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+        .contact-hero h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-style: italic;
+            color: #f5ede0;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+        .contact-hero p {
+            color: rgba(245,237,224,0.6);
+            font-size: 1rem;
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        /* ---- Layout ---- */
+        .contact-main {
+            display: grid;
+            grid-template-columns: 1fr 1.3fr;
+            gap: 4rem;
+            padding: 5rem 0;
+        }
+        @media (max-width: 768px) {
+            .contact-main { grid-template-columns: 1fr; gap: 3rem; padding: 3rem 0; }
+        }
+
+        /* ---- Contact Info Cards ---- */
+        .contact-info-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.9rem;
+            font-style: italic;
+            color: var(--color-text-main);
+            margin-bottom: 0.4rem;
+        }
+        .contact-info-subtitle {
+            color: var(--color-text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 2.5rem;
+        }
+        .contact-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+        .contact-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 1.1rem;
+            padding: 1.25rem 1.5rem;
+            background: var(--color-white);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+            transition: box-shadow 0.2s, transform 0.2s;
+        }
+        .contact-card:hover {
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+            transform: translateY(-2px);
+        }
+        .contact-card-icon {
+            font-size: 1.6rem;
+            line-height: 1;
+            margin-top: 2px;
+            width: 44px;
+            height: 44px;
+            background: var(--color-gold-bg, #fdf6e9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .contact-card-body h4 {
+            font-size: 0.8rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--color-text-muted);
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+        .contact-card-body p, .contact-card-body a {
+            font-size: 0.95rem;
+            color: var(--color-text-main);
+            font-weight: 500;
+            text-decoration: none;
+        }
+        .contact-card-body a:hover { color: var(--color-gold); }
+        .contact-card-body .note {
+            font-size: 0.78rem;
+            color: var(--color-text-muted);
+            margin-top: 2px;
+        }
+
+        /* Social links */
+        .contact-social-title {
+            font-size: 0.8rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--color-text-muted);
+            font-weight: 600;
+            margin: 2rem 0 1rem;
+        }
+        .contact-social-links {
+            display: flex;
+            gap: 0.75rem;
+        }
+        .contact-social-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 0.55rem 1.1rem;
+            border: 1px solid var(--color-border);
+            border-radius: 30px;
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: var(--color-text-main);
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .contact-social-btn:hover {
+            background: var(--color-gold);
+            border-color: var(--color-gold);
+            color: #fff;
+        }
+
+        /* ---- Form Panel ---- */
+        .contact-form-panel {
+            background: var(--color-white);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            padding: 2.5rem;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+        }
+        .contact-form-panel h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.8rem;
+            font-style: italic;
+            color: var(--color-text-main);
+            margin-bottom: 0.35rem;
+        }
+        .contact-form-panel .form-lead {
+            font-size: 0.88rem;
+            color: var(--color-text-muted);
+            margin-bottom: 1.75rem;
+        }
+        .contact-form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        @media (max-width: 480px) { .contact-form-row { grid-template-columns: 1fr; } }
+        .form-success-msg {
+            display: none;
+            background: #f0fdf4;
+            border: 1px solid #86efac;
+            border-radius: var(--radius-sm);
+            padding: 1rem 1.25rem;
+            color: #166534;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        /* ---- Map / Divider ---- */
+        .contact-divider {
+            border: none;
+            border-top: 1px solid var(--color-border);
+            margin: 0 0 4rem;
+        }
+        .contact-hours-section {
+            background: var(--color-surface, #faf8f5);
+            border-top: 1px solid var(--color-border);
+            border-bottom: 1px solid var(--color-border);
+            padding: 3rem 0;
+            margin-bottom: 4rem;
+        }
+        .contact-hours-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.5rem;
+            text-align: center;
+        }
+        .contact-hours-card h4 {
+            font-size: 0.75rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--color-gold);
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+        }
+        .contact-hours-card p {
+            font-size: 0.92rem;
+            color: var(--color-text-main);
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header class="site-header">
+        <div class="container flex items-center justify-between">
+            <a href="index.html" class="brand-logo" style="display:flex; align-items:center;">
+                <img src="logo.png" alt="Purple Mummy ELIXIRS Logo" style="height: 64px; margin-right: 14px; border-radius: 50%;">
+                <span style="display:inline-block;">Purple Mummy <span>ELIXIRS</span></span>
+            </a>
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="index.html#shop">Shop</a>
+                <a href="index.html#about">About Us</a>
+                <a href="contact.html" class="active">Contact Us</a>
+            </nav>
+            <div class="header-actions">
+                <a href="cart.html" class="cart-link" style="display:flex; align-items:center; gap:8px; background: var(--color-gold); color: #fff; padding: 0.45rem 1rem; border-radius: 30px; font-weight: 600; font-size: 0.85rem; letter-spacing: 0.5px; text-decoration:none; transition: background 0.2s; box-shadow: 0 2px 8px rgba(180,120,30,0.25);" onmouseover="this.style.background='var(--color-gold-dark)'" onmouseout="this.style.background='var(--color-gold)'">
+                    <span style="font-size:1.1rem;">🛍</span>
+                    <span>Cart</span>
+                    <span class="cart-count-badge" id="cart-count" style="background:#fff; color:var(--color-gold-dark); min-width:20px; height:20px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:0.75rem; font-weight:700; padding: 0 4px;">0</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="contact-hero">
+        <div class="container">
+            <span class="contact-hero-tag">Get In Touch</span>
+            <h1>Contact Purple Mummy</h1>
+            <p>We're here to help. Reach out and we'll get back to you as soon as possible.</p>
+        </div>
+    </section>
+
+    <!-- HOURS STRIP -->
+    <section class="contact-hours-section">
+        <div class="container">
+            <div class="contact-hours-grid">
+                <div class="contact-hours-card">
+                    <h4>Shop Hours</h4>
+                    <p>Mon – Sat</p>
+                    <p>8:30am – 7:00pm</p>
+                </div>
+                <div class="contact-hours-card">
+                    <h4>Delivery Days</h4>
+                    <p>Tuesday, Thursday</p>
+                    <p>& Saturday</p>
+                </div>
+                <div class="contact-hours-card">
+                    <h4>Delivery Hours</h4>
+                    <p>10:00am – 5:00pm</p>
+                </div>
+                <div class="contact-hours-card">
+                    <h4>Online Orders</h4>
+                    <p>24 / 7</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MAIN CONTENT -->
+    <main class="container">
+        <div class="contact-main">
+
+            <!-- LEFT: Info -->
+            <div>
+                <h2 class="contact-info-title">Let's Connect</h2>
+                <p class="contact-info-subtitle">Choose the way that's most convenient for you.</p>
+
+                <div class="contact-cards">
+                    <div class="contact-card">
+                        <div class="contact-card-icon">📞</div>
+                        <div class="contact-card-body">
+                            <h4>Phone / WhatsApp</h4>
+                            <a href="tel:+233594290701">+233 594 290 701</a>
+                            <p class="note">Available during shop hours</p>
+                        </div>
+                    </div>
+                    <div class="contact-card">
+                        <div class="contact-card-icon">✉️</div>
+                        <div class="contact-card-body">
+                            <h4>Email</h4>
+                            <a href="mailto:purplemummyelixirs@gmail.com">purplemummyelixirs@gmail.com</a>
+                            <p class="note">We reply within 24 hours</p>
+                        </div>
+                    </div>
+                    <div class="contact-card">
+                        <div class="contact-card-icon">📍</div>
+                        <div class="contact-card-body">
+                            <h4>Location</h4>
+                            <p>Sunyani, Bono Region</p>
+                            <p class="note">Ghana, West Africa</p>
+                        </div>
+                    </div>
+                    <div class="contact-card">
+                        <div class="contact-card-icon">🚚</div>
+                        <div class="contact-card-body">
+                            <h4>Delivery Info</h4>
+                            <p>Free delivery over GHC 1,000</p>
+                            <p class="note">GHC 15 extra for bus station delivery</p>
+                        </div>
+                    </div>
+                </div>
+
+                <p class="contact-social-title">Follow Us</p>
+                <div class="contact-social-links">
+                    <a href="#" class="contact-social-btn">📘 Facebook</a>
+                    <a href="#" class="contact-social-btn">📷 Instagram</a>
+                    <a href="#" class="contact-social-btn">🎵 TikTok</a>
+                </div>
+            </div>
+
+            <!-- RIGHT: Message Form -->
+            <div class="contact-form-panel">
+                <h2>Send Us a Message</h2>
+                <p class="form-lead">Have a question about a fragrance, an order, or delivery? Fill in the form below.</p>
+
+                <div class="form-success-msg" id="form-success">
+                    ✅ <span>Your message has been sent! We'll get back to you shortly.</span>
+                </div>
+
+                <form id="contact-form">
+                    <div class="contact-form-row">
+                        <div class="form-group">
+                            <label for="cf-name">Full Name</label>
+                            <input type="text" id="cf-name" class="form-control" required placeholder="Jane Doe">
+                        </div>
+                        <div class="form-group">
+                            <label for="cf-phone">Phone Number</label>
+                            <input type="tel" id="cf-phone" class="form-control" placeholder="0594 290 701">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="cf-email">Email Address</label>
+                        <input type="email" id="cf-email" class="form-control" placeholder="you@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="cf-subject">Subject</label>
+                        <select id="cf-subject" class="form-control">
+                            <option value="order">Order Enquiry</option>
+                            <option value="product">Product Question</option>
+                            <option value="delivery">Delivery Information</option>
+                            <option value="wholesale">Wholesale / Bulk Order</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="cf-message">Your Message</label>
+                        <textarea id="cf-message" class="form-control" rows="5" required placeholder="Write your message here..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-gold" style="width:100%; margin-top:0.5rem;" id="contact-submit-btn">
+                        SEND MESSAGE
+                    </button>
+                </form>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="footer-brand-logo" style="display:flex; align-items:center;">
+                        <img src="logo.png" alt="Logo" style="height: 64px; margin-right: 14px; border-radius: 50%;">
+                        <span>Purple Mummy <span style="color:var(--color-gold);">ELIXIRS</span></span>
+                    </div>
+                    <p>Luxurious artisanal oil perfumes crafted to express your presence without saying a word.</p>
+                    <div class="footer-social">
+                        <a href="#" class="social-link" aria-label="Facebook">f</a>
+                        <a href="#" class="social-link" aria-label="TikTok">t</a>
+                        <a href="#" class="social-link" aria-label="Instagram">in</a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h5>Information</h5>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="index.html#shop">Shop</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                        <li><a href="index.html#faq">FAQs</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h5>Our Policy</h5>
+                    <ul>
+                        <li><a href="#">Payment Policy</a></li>
+                        <li><a href="#">Return and Refund Policy</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h5>Contact Us</h5>
+                    <div class="footer-contact">
+                        <div class="footer-contact-item">
+                            <strong>Phone Number:</strong>
+                            <span>+233 594 290 701</span>
+                        </div>
+                        <div class="footer-contact-item">
+                            <strong>Email:</strong>
+                            <span>purplemummyelixirs@gmail.com</span>
+                        </div>
+                        <div class="footer-contact-item">
+                            <strong>Shop Hours:</strong>
+                            <span>Mon – Sat 8:30am – 7:00pm</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>COPYRIGHT 2025 © PURPLE MUMMY ELIXIRS. ALL RIGHTS RESERVED.</p>
+                <a href="login.html">Admin <strong>Portal</strong></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Update cart count from localStorage
+        try {
+            const cart = JSON.parse(localStorage.getItem('pm_cart')) || [];
+            const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const el = document.getElementById('cart-count');
+            if (el) el.textContent = count;
+        } catch(e) {}
+
+        // Contact Form — show success message on submit
+        document.getElementById('contact-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('contact-submit-btn');
+            btn.textContent = 'Sending...';
+            btn.disabled = true;
+
+            // Simulate send (no backend yet)
+            setTimeout(() => {
+                const successEl = document.getElementById('form-success');
+                successEl.style.display = 'flex';
+                this.reset();
+                btn.textContent = 'SEND MESSAGE';
+                btn.disabled = false;
+                successEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 1000);
+        });
+    </script>
+
+</body>
+</html>
