@@ -203,10 +203,30 @@ document.addEventListener('DOMContentLoaded', async () => {
     window.openProductModal = function() {
         productForm.reset();
         document.getElementById('p-id').value = '';
-        document.getElementById('p-category').value = 'Women';
+        
+        // Mock data pre-filling
+        document.getElementById('p-price-6ml').value = '50';
+        document.getElementById('p-price-10ml').value = '80';
+        document.getElementById('p-price-20ml').value = '150';
+        document.getElementById('p-price-30ml').value = '220';
+        document.getElementById('p-price-50ml').value = '350';
+        
+        document.getElementById('p-stock-6ml').value = '10';
+        document.getElementById('p-stock-10ml').value = '10';
+        document.getElementById('p-stock-20ml').value = '10';
+        document.getElementById('p-stock-30ml').value = '10';
+        document.getElementById('p-stock-50ml').value = '10';
+        
+        document.getElementById('p-category').value = 'Unisex';
+        document.getElementById('p-status').value = 'Active';
+        
+        // Clear fields that should NOT have mock data
+        document.getElementById('p-name').value = '';
+        document.getElementById('p-desc').value = '';
         document.getElementById('p-image-url').value = '';
         document.getElementById('image-preview-container').style.display = 'none';
         document.getElementById('image-preview').src = '';
+        
         document.getElementById('modal-title').textContent = 'Add New Product';
         productModal.classList.add('show');
     };
